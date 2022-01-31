@@ -2,7 +2,6 @@ var path,boy,cash,diamonds,jwellery,sword;
 var pathImg,boyImg,cashImg,diamondsImg,jwelleryImg,swordImg;
 var treasureCollection = 0;
 var cashG,diamondsG,jwelleryG,swordGroup;
-var gameOver;
 
 //Estados do jogo
 var PLAY=1;
@@ -16,16 +15,13 @@ function preload(){
   diamondsImg = loadImage("diamonds.png");
   jwelleryImg = loadImage("jwell.png");
   swordImg = loadImage("sword.png");
-  gover = loadImage("gameOver.png");
-  //Remova os comentários corretos da linha de código para carregar a imagem gameOver.png
-  gameOver = loadImage("gameOver.png");
+ // endImg =loadAnimation("gameOver.png");
 }
 
 function setup(){
   
   createCanvas(400,600);
-// Movendo o fundo
-  
+// Movendo plano de fundo
 path=createSprite(200,200);
 path.addImage(pathImg);
 path.velocityY = 4;
@@ -36,7 +32,7 @@ boy = createSprite(70,580,20,20);
 boy.addAnimation("SahilRunning",boyImg);
 boy.scale=0.08;
   
-
+  
 cashG=new Group();
 diamondsG=new Group();
 jwelleryG=new Group();
@@ -53,7 +49,7 @@ function draw() {
   edges= createEdgeSprites();
   boy.collide(edges);
   
-  //código para redefinir o fundo
+  //código para redefinir plano de fundo
   if(path.y > 400 ){
     path.y = height/2;
   }
@@ -65,59 +61,38 @@ function draw() {
 
     if (cashG.isTouching(boy)) {
       cashG.destroyEach();
+      //aumente a treasureCollection para 50
       treasureCollection=treasureCollection+50;
     }
     else if (diamondsG.isTouching(boy)) {
       diamondsG.destroyEach();
-      treasureCollection=treasureCollection+100;
-      
-    }else if(jwelleryG.isTouching(boy)) {
-      jwelleryG.destroyEach();
-      treasureCollection= treasureCollection + 150;
-      
-    }else{
-      if(swordGroup.isTouching(boy)) {
-        gameState=END;
-       
-        
-        cashG.destroyEach();
-        diamondsG.destroyEach();
-        jwelleryG.destroyEach();
-        swordGroup.destroyEach();
-        
-        cashG.setVelocityYEach(0);
-        diamondsG.setVelocityYEach(0);
-        jwelleryG.setVelocityYEach(0);
-        swordGroup.setVelocityYEach(0);
-        //Remova os comentários corretos da linha de código para exibir 'game over' (fim de jogo)
-
-        gameOver = createSprite(880,9980,20,20);
-        gameOver.addAnimation("gameover",gover);
-        gameOver.scale=0.7
-
-        gameOver = createSprite(180,280,20,20);
-        gameOver.addAnimation("gameover",gover);
-        gameOver.scale=0.7
-
-        gameOver = createSprite(180,280,20,20);
-        gameOver.addAnimation(gover);
-        gameOver.scale=0.7
-     
+            //aumente a treasureCollection para 100
+      diamondsG=diamondsG+100;
     }
-    
+    else if(jwellery.isTouching(boy)) {
+      jwelleryG.destroyEach();
+            //aumente a treasureCollection para 150
+      jwelleryG=jwelleryG+150;
+          }
+    else if (swordGroup.isTouching(boy)) {
+      gameState = END;
+       cashG.destroyEach(); 
+       diamondsG.destroyEach(); 
+       jwelleryG.destroyEach(); 
+       swordGroup.destroyEach(); 
+       cashG.setVelocityYEach(0); 
+       diamondsG.setVelocityYEach(0); 
+       jwelleryG.setVelocityYEach(0); 
+       swordGroup.setVelocityYEach(0); 
+      } 
   }
   
   drawSprites();
   textSize(20);
   fill(255);
-  text("Treasure: "+ treasureCollection,10,30);
+  text("Tesouro: "+ treasureCollection,150,30);
   }
-if(gameState === END){
-    if(keyDown(space)||keyDown(enter)){
-      gameState = PLAY;
-    }
-    }
-}
+
 
 function createCash() {
   if (World.frameCount % 200 == 0) {
